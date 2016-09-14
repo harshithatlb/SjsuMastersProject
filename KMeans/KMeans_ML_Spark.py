@@ -44,14 +44,3 @@ prediction = model.transform(schemaAttack)
 selected = prediction.select("features", "prediction")
 
 prediction.show();
-
-
-
-wssse = model.computeCost(schemaAttack)
-print("Within Set Sum of Squared Errors = " + str(wssse))
-
-    # Shows the result.
-centers = model.clusterCenters()
-print("Cluster Centers: ")
-for center in centers:
-	print(center)
