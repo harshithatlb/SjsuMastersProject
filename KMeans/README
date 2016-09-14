@@ -1,0 +1,9 @@
+Loading the data:
+
+
+Using Spark ml
+reads data from a text file and creates a Dataframe
+
+KMeans Pipeline
+
+Creates a prediction dataframe with the clusters into which they are predicted
