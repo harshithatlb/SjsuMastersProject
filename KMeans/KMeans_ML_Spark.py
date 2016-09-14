@@ -22,32 +22,32 @@ parts = lines.map(lambda l: l.split(","))
 attack = parts.map(lambda p: Row(protocol=int(p[0]), bytes=int(p[1]), packets=int(p[2]), duration=float(p[3]) ))
 
 # Infer the schema, and register the DataFrame as a table.
-schemaPeople = spark.createDataFrame(attack)
-schemaPeople.createOrReplaceTempView("attack")
+schemaAttack = spark.createDataFrame(attack)
+schemaAttack.createOrReplaceTempView("attack")
 
 # SQL can be run over DataFrames that have been registered as a table.
-teenagers = spark.sql("SELECT bytes,packets,duration FROM attack")
-teenagers.show();
+attackds = spark.sql("SELECT bytes,packets,duration FROM attack")
+attackds.show();
 
 # Pipeline
 vecAssembler = VectorAssembler(inputCols=["packets", "bytes", "duration"], outputCol="features")
-vecAssembler.transform(schemaPeople).head().features
+vecAssembler.transform(schemaAttack).head().features
 
 kmeans = KMeans().setK(9).setSeed(1).setFeaturesCol("features").setPredictionCol("prediction")
 listPipeline = [vecAssembler,kmeans]
 pipeline = Pipeline().setStages(listPipeline)
 
-model = pipeline.fit(schemaPeople)
+model = pipeline.fit(schemaAtatck)
 
 #Transform
-prediction = model.transform(schemaPeople)
+prediction = model.transform(schemaAttack)
 selected = prediction.select("features", "prediction")
 
 prediction.show();
 
 
 
-wssse = model.computeCost(schemaPeople)
+wssse = model.computeCost(schemaAttack)
 print("Within Set Sum of Squared Errors = " + str(wssse))
 
     # Shows the result.
