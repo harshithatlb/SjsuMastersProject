@@ -10,6 +10,8 @@ import string
 from pyspark import SparkContext
 # $example on$
 from pyspark.mllib.clustering import KMeans, KMeansModel
+from pyspark.streaming import StreamingContext
+from pyspark.streaming.kafka import KafkaUtils
 # $example off$
 
 def add_flags(arr, str):
@@ -42,16 +44,21 @@ def parseLine(line):
 if __name__ == "__main__":
     sc = SparkContext(appName="KMeansExample")  # SparkContext
 
+    brokers = "127.0.0.1:9200"
+    topics = "kmeans"
+    kvs = KafkaUtils.createDirectStream(ssc, ['ddosInput'], {"metadata.broker.list": brokers})
+    lines = kvs.map(lambda x: x[1])
+    print (lines)
     # $example on$
     # Load and parse the data
     data = sc.textFile("/home/harshitha/sjsuproject/prediction/roc")
-    parsedData =  data.map(parseLine)
+    #--parsedData =  data.map(parseLine)
 
     # Build the model (cluster the data)
-    clusters = KMeans.train(parsedData, 15, maxIterations=10,
+    #--clusters = KMeans.train(parsedData, 15, maxIterations=10,
                             runs=10, initializationMode="random")
 
-    clusters.save(sc, "/home/harshitha/sjsuproject/model/KMeansModelcombination")
+    #--clusters.save(sc, "/home/harshitha/sjsuproject/model/KMeansModelcombination")
 
     # $example off$
     sc.stop()
