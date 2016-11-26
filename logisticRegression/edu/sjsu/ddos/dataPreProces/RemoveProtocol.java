@@ -2,6 +2,7 @@ package edu.sjsu.ddos.dataPreProces;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaRDDLike;
@@ -52,13 +53,14 @@ public class RemoveProtocol {
 					}
 				});
 		System.out.println("Filtered TCP");
+		final String RecType = args[2];
 		JavaRDD<String> newDataSet = filterDataSet
 				.map(new Function<String, String>() {
 					public String call(String s) {
 						String[] columns = new String[11];
 						columns = s.split(",");
 						//Add 0 for normal data set and 1 for attack
-						String newLine = "1,"+ columns[0] + ","+columns[1] + ","+columns[2] + ","+columns[3] + ","+columns[8] + ","+columns[10] + ","+
+						String newLine = RecType+","+ columns[0] + ","+columns[1] + ","+columns[2] + ","+columns[3] + ","+columns[8] + ","+columns[10] + ","+
 						columns[7] + ","+columns[5] + ","+columns[6] + "," + columns[9] ;
 						return newLine;
 				}
