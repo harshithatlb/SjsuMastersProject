@@ -67,7 +67,7 @@ public class CSVExample {
             int numLinesToSkip = 0;
             String delimiter = ",";
             RecordReader recordReader = new CSVRecordReader(numLinesToSkip, delimiter);
-            FileSplit fileSplit = new FileSplit(new ClassPathResource("irisoutput.txt").getFile());
+            FileSplit fileSplit = new FileSplit(new ClassPathResource("irisoutput.txt").getFile("irisoutput"));
             recordReader.initialize(fileSplit);
             return recordReader;
     }
@@ -101,7 +101,7 @@ public class CSVExample {
         normalizer.transform(testDataForRunModel);         //Apply normalization to the test data. This is using statistics calculated from the *training* set
 
         //saving the dataset
-        File fileDataSet = new File("/Users/avakil/dataSetNew.txt");
+        File fileDataSet = new File("./dataSetNew.txt");
         fileDataSet.createNewFile();
         testDataForRunModel.save(fileDataSet);
 
@@ -140,7 +140,7 @@ public class CSVExample {
             .build();
 
         //saving the configuration
-        File fileConf = new File("/Users/avakil/MultiLayerConfiguration.txt");
+        File fileConf = new File("./MultiLayerConfiguration.txt");
         fileConf.createNewFile();
         FileWriter file = new FileWriter(fileConf.getAbsoluteFile(),true);
         BufferedWriter bw = new BufferedWriter(file);
