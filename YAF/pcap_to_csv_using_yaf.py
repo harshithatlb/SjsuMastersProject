@@ -15,7 +15,7 @@ if __name__ == "__main__":
 		os.system(str0)
 
 	for filename in glob.glob("*.pcap"):
-		str = "yaf --silk --flow-stats --in " + filename + " --out " + filename +".yaf"
+		str = "yaf --in " + filename + " --out " + filename +".yaf"
 		str2 = "rwipfix2silk --silk-output=" + filename + ".rw "+ filename+".yaf"
 		str3 = "rwcut --output-path="+ filename +".csv --delimited=, --timestamp-format=iso "+ filename +".rw"
 		os.system(str)
