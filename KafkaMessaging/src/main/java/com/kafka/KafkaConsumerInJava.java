@@ -7,7 +7,7 @@ import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
-import org.deeplearning4j.examples.dataExamples.DdosDLRun_debug;
+import org.deeplearning4j.examples.dataExamples.DdosDL4JRun;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.dataset.DataSet;
@@ -96,7 +96,7 @@ public class KafkaConsumerInJava {
                     System.out.println("Dataset: " + dataSet);
                     DLKafkaProducer producer = new DLKafkaProducer(topicName);
                     //  predict = DdosDLRun_debug.runModel(dataSet, config);
-                    predict = DdosDLRun_debug.runModel(dataSet, ml);
+                    predict = DdosDL4JRun.runModel(dataSet, ml);
                     producer.produceMessage(record.key(), predict);
 
 
