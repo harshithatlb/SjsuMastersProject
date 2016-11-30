@@ -1,4 +1,4 @@
-package edu.sjsu.ddos.dataPreProces;
+package DataPreprocess;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -13,6 +13,14 @@ public class RemoveProtocol {
 	public static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {
+		
+		if (args.length < 3) {
+			System.out
+					.println("Proper Usage is: /bin/spark-submit --class DataPreprocess.RemoveProtocol "
+							+ "--master local[2] <>/target/DataPreprocess-0.0.1-SNAPSHOT.jar <Path to Input Data>/*.csv <Path to output data>/Output"
+							+ " RecordType(0|1)");
+			System.exit(0);
+		}
 		
 		JavaSparkContext sc = new JavaSparkContext(
 				new SparkConf().setAppName("RemoveProtocolColumn"));
