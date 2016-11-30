@@ -61,7 +61,7 @@ public class KafkaConsumerInJava {
             System.out.println("Subscribed to topic " + topicName);
 
 
-            BufferedReader reader = new BufferedReader(new FileReader("/Users/avakil/dl4j-examples/model.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("~/SjsuMastersProject/dl4j-examples/model.txt"));
             String content;
             String output = "";
             while ( (content = reader.readLine()) != null )
