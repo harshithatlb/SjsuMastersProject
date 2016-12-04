@@ -9,9 +9,32 @@
 
 	<name>project</name>
 	<url>http://maven.apache.org</url>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<configuration>
+					<mainClass>com.sjsu.project.ElasticSingleton</mainClass>
+					<arguments>
+						<argument>argument1</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<targetPath>.</targetPath>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.main.class>com.sjsu.project.ElasticSingleton</java.main.class>
 	</properties>
 
 	<dependencies>
@@ -20,6 +43,11 @@
 			<groupId>org.ini4j</groupId>
 			<artifactId>ini4j</artifactId>
 			<version>0.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
