@@ -90,8 +90,8 @@ public class ElasticSingleton  extends Thread{
 			
 			producers = new ArrayList<String>(Integer.parseInt(numProducer));
 			
-			for (int i = 1; i <= Integer.parseInt(numProducer) ;i++)
-				producers.add(ini.get("PRODUCER_NAME", "queue"+i));
+			producers.add("input");
+			
 			numConsumers = ini.get("CONSUMERS","NUM");
 			
 			consumers = new ArrayList<String>(Integer.parseInt(numConsumers));
@@ -118,6 +118,7 @@ public class ElasticSingleton  extends Thread{
 			UpdateES p = new UpdateES("grp",consumers.get(i));
 			listProducers.add(p);
 			p.start();
+			System.out.println("consumer");
 		}
 	}
 }

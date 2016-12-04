@@ -49,7 +49,6 @@ public class UpdateES extends Thread{
         this.topic = topic;
 	}
 	
-	
 	public void run() {
         
 		consumer.subscribe(Collections.singletonList(topic));
@@ -73,7 +72,7 @@ public class UpdateES extends Thread{
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		}finally{	
 			consumer.close();
 		}
         	

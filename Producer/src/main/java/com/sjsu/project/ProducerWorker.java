@@ -105,8 +105,9 @@ public class ProducerWorker extends Thread {
 		    	Map<String, Object> res = hit.getSource();
 		    	String str = hit.getId()+"|"+res.get("pkts").toString() + ","+res.get("bytes") + "," +
 		    			res.get("flow_duration") +  "," + process(res.get("flow_closure_flag").toString());
-		    	/*if (hit.getId().equals("AVXnlQn2D8hgobG71RJJ")
-		    		System.out.println(str+"ddos  :"+res.get("ml_ddos_status"));*/
+		    	
+		    //	System.out.println( res.toString() + "ddos" +res.get("ml_ddos_status"));
+		    
 				if (dt_time == null)
 					dt_time = formatter.parseDateTime(res.get("@timestamp").toString());
 				else{
@@ -117,7 +118,7 @@ public class ProducerWorker extends Thread {
 		    	}
 		    	for (String qname : ElasticSingleton.producers)
 		    		producer.send(new ProducerRecord<String, String>(qname, str));
-		    	//System.out.println(str);
+		    	System.out.println(str);
 		    	
 		    }
 		    response = ElasticSingleton.client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(100)).execute().actionGet();
