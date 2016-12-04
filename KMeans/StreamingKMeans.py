@@ -23,18 +23,17 @@ if __name__ == "__main__":
 
     def predict(line):
         print(" *************************in predict")
+        if len(line) == 0:
+            print ("retrun none")
+            return None
         print(line)
         X_Flow = line.split('|')
-        print(X_Flow[1])
-        print("type of X_Flow[1]")
-        print(type(X_Flow[1]))
         X_predt=np.fromstring(X_Flow[1],sep=',')
-        #X_p = array([float(x) for x in X_Flow[1].split(',')])
-        #print(type(X_p))
         result = sameModel.predict(X_predt)
-        print("*********result is ")
-        print(result)
-        return [X_Flow[0], result]
+        #result = ([X_Flow[0]]] if result in clusters else None)
+        result = ([X_Flow[0]] if result == 7 else None)
+        print(str(result))
+        return result
 
     def sendkafka(messages,topicOut):
         producer = KafkaProducer(bootstrap_servers=[brokers])
@@ -54,13 +53,11 @@ if __name__ == "__main__":
     print (str(brokers))
     print (str(topicIn))
     kvs = KafkaUtils.createDirectStream(ssc, [topicIn], {"metadata.broker.list": brokers})
-    print (str(kvs))
+
     lines = kvs.map(lambda x: x[1])
+    lines = lines.filter(lambda x: x != None)
     out=lines.map(predict)
-    #print (str(lines))
-    #print (out)
-    #print ("printing lines")
-    #print ("t0 Kafka")
+    ddosOut=out.filter(lambda x: x != None)
     sentRDD = out.foreachRDD(lambda rdd: rdd.foreachPartition(lambda records: sendkafka(records,topicOut)))
 
     ssc.start()
