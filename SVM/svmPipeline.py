@@ -9,9 +9,26 @@ from sklearn import metrics
 from sklearn.metrics import accuracy_score
 import sklearn.pipeline
 from sklearn.externals import joblib
+import argparse
+
+parser = argparse.ArgumentParser(description='Script to build SVM Pipeline')
+parser.add_argument('-g', '--gamma',required=True,help='gamma parameter',type=float)
+parser.add_argument('-c', '--penalty',required=True,help='penalty parameter',type=float)
+parser.add_argument('-f', '--dataset',required=True,help='Input Dataset File',type=argparse.FileType('r'))
+parser.add_argument('-t', '--testSize',required=True,help='Test Size',type=float)
+parser.add_argument('-r', '--randomState',required=True,help='randomState',type=int)
+parser.add_argument('-m', '--modelPath',required=True,help='modelPath',type=argparse.FileType('w'))
+
+args=parser.parse_args()
+pGamma=args.gamma #10
+datasetFile=args.dataset
+pPenalty=args.penalty #10000000.0
+pTestSize=args.testSize #.33
+pRandomState=args.randomState #42
+modelPath=args.modelPath#svm_pipeline.pkl
 
 np.set_printoptions(suppress=True)
-df = pd.read_csv('/home/komalydedhia/Spark/SParkPreProcessed/sampleDDOSSplitFlag/part-00000')
+df = pd.read_csv(datasetFile) #/home/komalydedhia/Spark/SParkPreProcessed/sampleDDOSSplitFlag/part-00000
 df.dropna(inplace=True)
 print (df.isnull().any())
 
@@ -34,9 +51,9 @@ print (np.any(np.isnan(X)))
 
 Y = df['type']
 
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=pTestSize, random_state=pRandomState)
 
-clf = svm.SVC(kernel='rbf', gamma=10, C=10000000.0,)
+clf = svm.SVC(kernel='rbf', gamma=pGamma, C=pPenalty,)
 
 standardized_X = preprocessing.StandardScaler()
 
@@ -52,17 +69,6 @@ report = metrics.classification_report( y_test, y_prediction )
 
 print(report)
 
-test=np.array([1., 48., 0., 0., 0.,0.,0.,1.])
-# XY=standardized_X.transform(test)
-# print (XY)
-result = pipeline.predict(test)
-print(result)
-
-joblib.dump(pipeline, 'svm_pipeline.pkl')
+joblib.dump(pipeline, modelPath)
 
 ##############################################################################
-
-svm_pipeline = joblib.load('svm_pipeline.pkl')
-X_test = np.array([1.0, 48.0, 0.000, 0.0, 0.0,0.0,0.0,1.0])
-result = svm_pipeline.predict(X_test)
-print(result)
