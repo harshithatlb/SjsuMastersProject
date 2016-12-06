@@ -12,10 +12,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import kafka.consumer.ConsumerConfig;
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
-import kafka.javaapi.consumer.ConsumerConnector;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,20 +21,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class UpdateES extends Thread{
 	KafkaConsumer<String, String> consumer;
 	Properties props;
 	private String topic;
+	private String algo_status;
 	
-	UpdateES(String grp, String topic){
+	UpdateES(String algo_status, String topic){
 		props = new Properties();
         props.put("zookeeper.connect", ElasticSingleton.zookeeper_server);
-        props.put("group.id", grp);
+        props.put("group.id", algo_status);
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "200");
         props.put("auto.commit.interval.ms", "1000");
@@ -47,8 +43,12 @@ public class UpdateES extends Thread{
         consumer = new KafkaConsumer
                 <String, String>(props);
         this.topic = topic;
+        this.algo_status = algo_status;
+        System.out.println("algo_status : "+ this.algo_status);
+        
+        
 	}
-	
+		
 	public void run() {
         
 		consumer.subscribe(Collections.singletonList(topic));
@@ -71,7 +71,7 @@ public class UpdateES extends Thread{
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}finally{	
 			consumer.close();
 		}
@@ -83,7 +83,7 @@ public class UpdateES extends Thread{
 	    consumer.wakeup();
 	  }
 	
-	private static void updateRecord_StateInES(String recordId, String state) throws IOException, InterruptedException, ExecutionException{
+	private void updateRecord_StateInES(String recordId, String state) throws IOException, InterruptedException, ExecutionException{
 		ElasticSingleton.getInstance();
 		XContentBuilder jb_status;
 		IndexRequest indexRequest;
@@ -91,7 +91,7 @@ public class UpdateES extends Thread{
 		jb_status = XContentFactory.jsonBuilder();
 
 		jb_status.startObject();
-		jb_status.field("ml_ddos_status",state);
+		jb_status.field(algo_status,state);
 		jb_status.endObject();
 
 		indexRequest = new IndexRequest(ElasticSingleton.indexName, ElasticSingleton.indexName,recordId)

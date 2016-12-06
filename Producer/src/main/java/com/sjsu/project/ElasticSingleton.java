@@ -46,6 +46,8 @@ public class ElasticSingleton  extends Thread{
 	public static ArrayList<String> consumers;
 	public static String starttime;
 	
+	public static ArrayList<String> statusFields;
+	public static String numStatus;
 	/*consumer properties */
 	public static String zookeeper_server;
 
@@ -63,7 +65,7 @@ public class ElasticSingleton  extends Thread{
 			
 			try{
 				client = TransportClient.builder().build()
-				        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(nodeName), 9300));
+				        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("45.55.28.43"), 9300));
 			} catch (Exception e){ 
 				e.printStackTrace();
 			}
@@ -89,15 +91,18 @@ public class ElasticSingleton  extends Thread{
 			numProducer = ini.get("PRODUCERS","NUM");
 			
 			producers = new ArrayList<String>(Integer.parseInt(numProducer));
-			
 			producers.add("input");
 			
 			numConsumers = ini.get("CONSUMERS","NUM");
-			
 			consumers = new ArrayList<String>(Integer.parseInt(numConsumers));
+			for (int i = 1; i <= Integer.parseInt(numConsumers) ;i++)
+				consumers.add(ini.get("CONSUMER_NAME", "ml_algo"+i));
 			
-			for (int i = 1; i <= Integer.parseInt(numProducer) ;i++)
-				consumers.add(ini.get("CONSUMER_NAME", "queue"+i));
+			statusFields = new ArrayList<String>(Integer.parseInt(numConsumers));
+			
+			for (int i = 1; i <= Integer.parseInt(numConsumers) ;i++)
+				statusFields.add(ini.get("CONSUMER_NAME", "ml_algo"+i+"_status"));
+			
 			zookeeper_server = ini.get("ZOOKEEPER_PROP","SERVER");
 			
 		} catch (Exception error) {
@@ -115,10 +120,10 @@ public class ElasticSingleton  extends Thread{
 		
 		for (int i = 0; i < Integer.parseInt(numConsumers) ;i++)
 		{	
-			UpdateES p = new UpdateES("grp",consumers.get(i));
+			UpdateES p = new UpdateES(statusFields.get(i),consumers.get(i));
 			listProducers.add(p);
 			p.start();
-			System.out.println("consumer");
+			
 		}
 	}
 }

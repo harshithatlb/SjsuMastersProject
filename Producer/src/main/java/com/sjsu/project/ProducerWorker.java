@@ -103,10 +103,12 @@ public class ProducerWorker extends Thread {
 		    for (SearchHit hit : response.getHits().getHits()) {
 		    	
 		    	Map<String, Object> res = hit.getSource();
+		    	System.out.println("hit: " + hit.getSourceAsString());
 		    	String str = hit.getId()+"|"+res.get("pkts").toString() + ","+res.get("bytes") + "," +
 		    			res.get("flow_duration") +  "," + process(res.get("flow_closure_flag").toString());
+		    	System.out.println("ddos: " + res.get("ml_ddos_status"));
 		    	
-		    //	System.out.println( res.toString() + "ddos" +res.get("ml_ddos_status"));
+		    	//	System.out.println( res.toString() + "ddos" +res.get("ml_ddos_status"));
 		    
 				if (dt_time == null)
 					dt_time = formatter.parseDateTime(res.get("@timestamp").toString());
