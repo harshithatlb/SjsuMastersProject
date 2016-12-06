@@ -65,7 +65,7 @@ public class ElasticSingleton  extends Thread{
 			
 			try{
 				client = TransportClient.builder().build()
-				        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("45.55.28.43"), 9300));
+				        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(ES_IP), 9300));
 			} catch (Exception e){ 
 				e.printStackTrace();
 			}
