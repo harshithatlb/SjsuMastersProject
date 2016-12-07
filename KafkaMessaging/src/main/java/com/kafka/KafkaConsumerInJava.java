@@ -1,3 +1,5 @@
+//This calss consumes the static data
+
 package com.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,6 +26,8 @@ import java.util.Properties;
 
 /**
  * Created by avakil on 11/29/16.
+ *
+ *
  */
 public class KafkaConsumerInJava {
 
@@ -61,7 +65,7 @@ public class KafkaConsumerInJava {
             System.out.println("Subscribed to topic " + topicName);
 
 
-            BufferedReader reader = new BufferedReader(new FileReader("~/SjsuMastersProject/dl4j-examples/model.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("/Users/avakil/dl4j-examples/model.txt"));
             String content;
             String output = "";
             while ( (content = reader.readLine()) != null )

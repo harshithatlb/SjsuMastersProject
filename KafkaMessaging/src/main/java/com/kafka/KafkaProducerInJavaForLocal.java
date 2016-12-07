@@ -1,22 +1,21 @@
 package com.kafka;
-/// this class has sample producer without record id ( for static data)
+//this class has messages of the form - sent by elastic search ie with record_id
 /**
  * Created by avakil on 11/25/16.
  */
 
-import org.apache.kafka.clients.producer.KafkaProducer;
+import java.util.Properties;
 import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import java.util.Properties;
 
-
-public class KafkaProducerInJava {
+public class KafkaProducerInJavaForLocal {
 
     public static void main(String[] args) throws Exception{
 
         Producer<String, String>  producer;
-    //    String topicName="test";
+       // String topicName="ddos_dl";
 
 
         // Check arguments length value
@@ -57,10 +56,10 @@ public class KafkaProducerInJava {
         producer = new KafkaProducer
                 <String, String>(props);
 
-        producer.send(new ProducerRecord<String, String>(topicName,"1","0,1,40,0.000,1,0,0,1,0"));
-        producer.send(new ProducerRecord<String, String>(topicName,"1","0,1,40,0.000,0,0,0,1,0"));
-        producer.send(new ProducerRecord<String, String>(topicName,"1","0,9,4879,21.294,1,1,1,1,1"));
-        producer.send(new ProducerRecord<String, String>(topicName,"1","0,5,867,0.402,1,1,1,1,1"));
+        producer.send(new ProducerRecord<String, String>(topicName,"1","AVfl3EseAHODrg4HFrEC|9,4005,564312763,1,1,1,0,1"));
+        producer.send(new ProducerRecord<String, String>(topicName,"1","AVfl3EYBAHODrg4HFrDz|37,30985,96856,1,0,1,0,1"));
+       producer.send(new ProducerRecord<String, String>(topicName,"1","Vfl3EdkAHODrg4HFrD3|2,673,28141,0,0,0,0,0"));
+        producer.send(new ProducerRecord<String, String>(topicName,"1","AVfl3EjJAHODrg4HFrD7|57,46575,319213,1,0,1,0,1"));
 
         System.out.println("Message sent successfully");
         producer.close();

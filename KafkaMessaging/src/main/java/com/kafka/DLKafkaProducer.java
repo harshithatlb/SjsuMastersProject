@@ -25,7 +25,7 @@ public class DLKafkaProducer {
         Properties props = new Properties();
 
         //Assign localhost id
-        props.put("bootstrap.servers","localhost/:9092");
+        props.put("bootstrap.servers","localhost/:9093");
 
         //Set acknowledgements for producer requests.
         props.put("acks","all");
