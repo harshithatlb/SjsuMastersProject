@@ -3,8 +3,9 @@ import numpy as np
 from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kafka import KafkaUtils
-import sys
 from kafka import KafkaProducer
+import sys
+
 
 
 
@@ -23,7 +24,7 @@ if __name__ == "__main__":
 				X_Flow=line.split('|')
 				X_predict=np.fromstring(X_Flow[1],sep=',')
 				# 'packets','bytes','duration','A','F','P','R','S'
-				result = svm_pipeline.predict(X_predict.reshape(1,-1))
+				result = randomforest.predict(X_predict.reshape(1,-1))
 				print(result)
 			except:
 				pass
@@ -38,9 +39,9 @@ if __name__ == "__main__":
 		for message in messages:
 			print ("sending msg........")
 			print(message[0])
-
-			producer.send(topicOut,str(message[0]))
-
+			
+			producer.send(topicOut, str(message[0]))
+		
 
 		
 		producer.flush()
@@ -52,7 +53,7 @@ if __name__ == "__main__":
 
 	modelPath, brokers, topicIn, topicOut = sys.argv[1:]
 
-	svm_pipeline = joblib.load(modelPath) # '/home/komalydedhia/295/svm/svm_pipeline.pkl'
+	randomforest = joblib.load(modelPath) 
 
 	sc = SparkContext(appName="Spark streaming ddos")
 	ssc = StreamingContext(sc, 2)
